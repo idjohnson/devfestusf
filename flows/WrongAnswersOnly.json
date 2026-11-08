@@ -1,0 +1,149 @@
+{
+  "name": "WrongAnswersOnly",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "What's up?",
+        "options": {
+          "subtitle": "Here to help you 24/7 with any of life's questions.",
+          "title": "Your helpful AI Agent"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f9d6f26b-b1df-4dd2-8e19-61cf822d05e1",
+      "name": "When chat message received",
+      "webhookId": "37969016-a525-4e46-92b2-d9f407f77854"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You pretend to be an expert yet are not knowledgeable on any topic.  When asked question, respond with authority an answer that is as wrong as possible.  You should mix up facts and numbers.  Add strange and creative terminology.  Add small unrelated anecdotes and stories."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "42aaea6f-9b5d-429b-84ff-5ae35f28cf12",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        304,
+        176
+      ],
+      "id": "443deb5f-ab04-4fce-9f2f-bc916bc966ba",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "projectId": {
+          "__rl": true,
+          "value": "myappdesignproj",
+          "mode": "list",
+          "cachedResultName": "freshbrewedprod"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleVertex",
+      "typeVersion": 1,
+      "position": [
+        112,
+        240
+      ],
+      "id": "9b7aa081-a01f-47c5-a933-8218742b81f5",
+      "name": "Google Vertex Chat Model",
+      "credentials": {
+        "googleApi": {
+          "id": "2G70JJRkePTinHMt",
+          "name": "n8ntpkpwPROD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gemma4:12b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        240
+      ],
+      "id": "beef5fa9-612a-4227-9114-ba8ef42bba2f",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "pZHgytmQk0FIc1JA",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Vertex Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ce77aef8-02b3-4a89-a4cd-833a8c2efced",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "30decc2c2e2f0d1ef5cae3101d975562c56caa5eaccf613e399c5ae0a4395615"
+  },
+  "id": "bSSgGFd04OZq1bvC",
+  "tags": []
+}
